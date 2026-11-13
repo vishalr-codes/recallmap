@@ -4,14 +4,13 @@ RECALLMAP is a developer-focused platform for mapping data dependencies,
 simulating deletion impact, managing deletion workflows, and verifying
 outcomes with tamper-evident audit evidence.
 
-> **Development status:** Phases 1-7 are implemented at the service
-> foundation level: architecture, backend foundation, authentication/
-> organization management, lineage graph APIs, deletion-impact simulation,
-> orphan detection, async deletion execution, and an audit/verification
-> ledger. JWT registration/login, workspace management, source
-> registration, graph traversal, impact summaries, orphan findings,
-> request execution, audit hash chaining, and evidence recording are all
-> included. The frontend dashboard and 3D experience remain future work.
+> **Development status:** The Spring Boot backend contains service/API
+> foundations for authentication, organizations/workspaces, data sources,
+> lineage, simulation, orphan detection, deletion execution, audit, and
+> verification. The React frontend now has a routed application shell and
+> initial shared design system. The Command Center remains a labeled demo;
+> most module pages are not yet connected to backend data. This is not yet a
+> production-ready SaaS platform.
 
 ## Architecture
 
@@ -27,7 +26,7 @@ shared owner relationships, indirect propagation, and cycle detection.
 See [Architecture](docs/architecture.md) and the
 [system context diagram](docs/system-architecture.mmd).
 
-## Planned repository layout
+## Repository structure
 
 ```text
 backend/
@@ -40,10 +39,13 @@ backend/
   src/test/java/...
 frontend/
   src/
-    app/ components/ features/ lib/ styles/
-  tests/
+    app/
+    components/
+    features/
+    data/
 docs/
   architecture.md
+  frontend-architecture.md
   database-erd.mmd
   system-architecture.mmd
 ```
@@ -61,8 +63,9 @@ docs/
 9. 3D experience and animations
 10. Testing, optimization, and deployment
 
-Each phase is gated for review before the next phase begins. See the phase
-acceptance criteria in [Architecture](docs/architecture.md).
+The enterprise transformation is proceeding in bounded stages. See
+[Frontend architecture and implementation map](docs/frontend-architecture.md)
+and the phase acceptance criteria in [Architecture](docs/architecture.md).
 
 ## Safety and evidence
 
@@ -103,7 +106,10 @@ PostgreSQL migrations. Run backend checks from `backend/` with `gradle test`.
 
 ## Current limitations
 
-Authentication and authorization, business REST endpoints, frontend,
-connectors, asynchronous execution, audit hashing/verification, and
-deployment configuration are not implemented. The database schema is a
-baseline for the planned modules, not evidence that these workflows exist.
+Frontend pages beyond the demo Command Center are route foundations and do
+not yet present API-backed workflows. Some existing backend controllers expose
+only create/run operations without corresponding list, approval, or retry
+operations. Tenant authorization must be verified and completed before
+production use. Connector execution is demonstration-only; generated evidence
+does not establish deletion in a real external system. Deployment automation,
+frontend workflow tests, and end-to-end coverage remain outstanding.

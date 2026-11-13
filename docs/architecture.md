@@ -24,9 +24,10 @@ production integrations.
 
 ## System shape
 
-- **Web client:** React, TypeScript, Vite, Tailwind CSS, Framer Motion,
-  React Flow, and Three.js via React Three Fiber/Drei. Charts use an
-  open-source library selected when the dashboard is implemented.
+- **Web client:** React, TypeScript, Vite, React Router, Tailwind CSS,
+  Framer Motion, React Flow, Three.js via React Three Fiber/Drei, and
+  Recharts. The routed shell and shared design primitives are being built
+  before page-by-page API integration.
 - **API:** Java and Spring Boot, divided into business modules with
   module-owned services and persistence responsibilities.
 - **Database:** PostgreSQL with schema changes managed by Flyway.
@@ -103,30 +104,32 @@ not, by itself, prevent a privileged operator from rewriting the entire store.
 External anchoring and key management are future hardening options, not claims
 of the initial ledger.
 
-## API surface (planned)
+## API surface (current foundation)
 
-All endpoints are versioned and tenant-scoped. List endpoints should support
-consistent pagination and validated filtering/sorting.
+The backend currently exposes the following versioned endpoints. Their
+existence does not imply complete tenant authorization or production workflow
+coverage. In particular, list endpoints, approval/retry operations, pagination,
+and consistent filtering remain incomplete in several modules.
 
 ```text
-/api/v1/auth
-/api/v1/users
-/api/v1/workspaces
-/api/v1/data-sources
-/api/v1/lineage
-/api/v1/simulations
-/api/v1/orphans
-/api/v1/deletion-requests
-/api/v1/executions
-/api/v1/verifications
-/api/v1/audit
-/api/v1/notifications
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+GET, POST /api/v1/organizations
+GET, POST /api/v1/organizations/{organizationId}/workspaces
+GET, POST /api/v1/data-sources
+GET /api/v1/lineage/graph
+GET /api/v1/simulations
+GET /api/v1/orphans
+POST /api/v1/deletion-requests
+POST /api/v1/executions/{targetId}/run
+GET, POST /api/v1/verifications
+GET, POST /api/v1/audit
 ```
 
-Concrete request/response schemas and authorization requirements will be
-specified alongside implementation and OpenAPI endpoints. The foundation
-currently exposes operational health and OpenAPI metadata only; business
-routes remain future work. API errors use Spring `ProblemDetail` with stable
+Concrete payload shapes are defined alongside the current controllers and
+DTOs. The frontend route/API readiness map is maintained in
+[Frontend architecture](frontend-architecture.md). API errors use Spring
+`ProblemDetail` with stable
 `errorCode` and `timestamp` extensions; validation failures include sorted
 field violations, while unexpected failures return a generic message without
 exception details.
