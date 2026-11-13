@@ -1,0 +1,97 @@
+erDiagram
+    USER ||--o{ ORGANIZATION_MEMBERSHIP : joins
+    ORGANIZATION ||--o{ ORGANIZATION_MEMBERSHIP : has
+    ROLE ||--o{ ORGANIZATION_MEMBERSHIP : grants
+    ORGANIZATION ||--o{ WORKSPACE : contains
+    WORKSPACE ||--o{ DATA_SOURCE : registers
+    DATA_SOURCE ||--o{ DATA_ENTITY : exposes
+    DATA_ENTITY ||--o{ DATA_RELATIONSHIP : participates
+    DATA_RELATIONSHIP }o--|| DATA_ENTITY : connects
+    DATA_SOURCE ||--o{ DATA_FLOW : participates
+    DATA_FLOW }o--|| DATA_SOURCE : connects
+    WORKSPACE ||--o{ DATA_CHANGE_EVENT : records
+    DATA_SOURCE o|--o{ DATA_CHANGE_EVENT : changes
+    WORKSPACE ||--o{ DELETION_REQUEST : scopes
+    USER ||--o{ DELETION_REQUEST : requests
+    DELETION_REQUEST ||--|{ DELETION_TARGET : includes
+    DATA_SOURCE ||--o{ DELETION_TARGET : targets
+    DELETION_TARGET ||--o{ DELETION_EXECUTION : attempts
+    DELETION_TARGET ||--o{ VERIFICATION_RESULT : verifies
+    WORKSPACE ||--o{ ORPHAN_FINDING : reports
+    WORKSPACE ||--o{ AUDIT_EVENT : records
+    WORKSPACE ||--o{ NOTIFICATION : contains
+    USER ||--o{ NOTIFICATION : receives
+
+    USER {
+        uuid id PK
+    }
+    ROLE {
+        uuid id PK
+        string role_key UK
+    }
+    ORGANIZATION {
+        uuid id PK
+    }
+    ORGANIZATION_MEMBERSHIP {
+        uuid user_id FK
+        uuid organization_id FK
+        string role
+    }
+    WORKSPACE {
+        uuid id PK
+        uuid organization_id FK
+    }
+    DATA_SOURCE {
+        uuid id PK
+        uuid workspace_id FK
+    }
+    DATA_ENTITY {
+        uuid id PK
+        uuid data_source_id FK
+    }
+    DATA_RELATIONSHIP {
+        uuid id PK
+        uuid source_entity_id FK
+        uuid target_entity_id FK
+    }
+    DATA_FLOW {
+        uuid id PK
+        uuid source_data_source_id FK
+        uuid target_data_source_id FK
+    }
+    DATA_CHANGE_EVENT {
+        uuid id PK
+        uuid workspace_id FK
+        uuid data_source_id FK
+    }
+    DELETION_REQUEST {
+        uuid id PK
+        uuid workspace_id FK
+        uuid requested_by FK
+    }
+    DELETION_TARGET {
+        uuid id PK
+        uuid deletion_request_id FK
+        uuid data_source_id FK
+    }
+    DELETION_EXECUTION {
+        uuid id PK
+        uuid deletion_target_id FK
+    }
+    VERIFICATION_RESULT {
+        uuid id PK
+        uuid deletion_target_id FK
+    }
+    ORPHAN_FINDING {
+        uuid id PK
+        uuid workspace_id FK
+    }
+    AUDIT_EVENT {
+        uuid id PK
+        uuid workspace_id FK
+    }
+    NOTIFICATION {
+        uuid id PK
+        uuid workspace_id FK
+        uuid user_id FK
+    }

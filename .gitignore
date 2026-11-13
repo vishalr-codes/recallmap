@@ -1,0 +1,24 @@
+# Java / Gradle
+.gradle/
+**/build/
+*.class
+
+# Node / Vite
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+npm-debug.log*
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# IDE and operating system
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.DS_Store
+Thumbs.db

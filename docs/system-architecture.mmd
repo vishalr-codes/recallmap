@@ -1,0 +1,29 @@
+flowchart LR
+    Browser["React / TypeScript client<br/>2D dashboard + optional 3D"]
+    API["Spring Boot modular monolith<br/>/api/v1"]
+    Auth["Auth + tenant authorization"]
+    Lineage["Sources + lineage"]
+    Simulation["Impact simulation"]
+    Deletion["Deletion requests"]
+    Execution["Async execution<br/>demo connectors initially"]
+    Audit["Audit hash chain"]
+    Verification["Evidence verification"]
+    DB[("PostgreSQL<br/>Flyway-managed")]
+    External["Registered data systems<br/>(only explicitly configured)"]
+
+    Browser -->|"HTTPS / JSON"| API
+    API --> Auth
+    API --> Lineage
+    API --> Simulation
+    API --> Deletion
+    Deletion --> Execution
+    Execution --> External
+    Execution --> Audit
+    Audit --> Verification
+    Auth --> DB
+    Lineage --> DB
+    Simulation --> DB
+    Deletion --> DB
+    Execution --> DB
+    Audit --> DB
+    Verification --> DB
